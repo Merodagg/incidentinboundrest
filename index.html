@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Registaration Form</title>
+    <link rel="stylesheet" href="home.css" />
+    <script type="text/javascript" lang="javascript" src="home.js"></script>
+    <script>
+      function Onsubmit() {
+        var caller=document.getElementById("caller").value;
+        var shortdescription=document.getElementById("shortdescription").value;
+       var description=document.getElementById("description").value;
+        
+var requestBody = '{"short_description":"' + shortdescription +'","description":"' + description +'","caller_id":"' +caller +
+
+'"}';
+ 
+        var client = new XMLHttpRequest();
+        client.open(
+          "post",
+          "https://dev70945.service-now.com/api/now/table/incident?sysparm_display_value=true"
+        );
+
+        client.setRequestHeader("Accept", "application/json");
+        client.setRequestHeader("Content-Type", "application/json");
+
+        //Eg. UserName="admin", Password="admin" for this code sample.
+        client.setRequestHeader(
+          "Authorization",
+          "Basic " + btoa("admin" + ":" + "kDZfVryH=4$5")
+        );
+
+        client.onreadystatechange = function () {
+          if (this.readyState == this.DONE) {
+            //document.getElementById("response").innerHTML = this.status + this.response;
+              var formdescription=this.response;
+              var parsedata=JSON.parse(formdescription);
+              alert(" incident is submited");
+              
+          }
+        };
+        client.send(requestBody);
+      }
+
+    </script>
+  </head>
+  <h1>incident Registaration Form</h1>
+  <div class="container">
+    <div class="row">
+      <div class="col-10">
+        <label for="caller">caller:</label>
+      </div>
+      <div class="col-90">
+        <input type="text" id="caller" name="caller" placeholder="caller" />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-10">
+        <label for="shortdescription">short description:</label>
+      </div>
+      <div class="col-90">
+        <input
+          type="text"
+          id="shortdescription"
+          name="shortdescription"
+          placeholder="short description"
+        />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-10">
+        <label for="description">description:</label>
+      </div>
+      <div class="col-90">
+        <textarea
+          name="description"
+          id="description"
+          cols="30"
+          rows="10"
+        ></textarea>
+      </div>
+
+    <div class="row">
+      <input type="submit" value="save" onclick="Onsubmit()" />
+    </div>
+  </div>
+</html>
